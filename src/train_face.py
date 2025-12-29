@@ -94,7 +94,7 @@ def translate_label(label):
 LABEL_TO_ID = {label: i for i, label in enumerate(UNIFIED_LABELS)}
 ID_TO_LABEL = {i: label for i, label in enumerate(UNIFIED_LABELS)}
 
-print(f'Unified Labels: {UNIFIED_LABELS}')
+print('Unified Labels: {}'.format(UNIFIED_LABELS))
 
 # %% [code]
 # ============================================================
@@ -121,7 +121,7 @@ def process_folder(base_path, dataset_name):
                         image_paths.append(str(img_file))
                         image_labels.append(translated)
                         count += 1
-    print(f'{dataset_name}: {count} images')
+    print('{}: {} images'.format(dataset_name, count))
 
 # FER2013
 print('Loading FER2013...')
@@ -145,10 +145,10 @@ for base in other_paths:
         for sub in ['train', 'test', 'Train', 'Test', 'training', 'testing']:
             sub_path = Path(base) / sub
             if sub_path.exists():
-                process_folder(str(sub_path), f'{base.split("/")[-1]}-{sub}')
+                process_folder(str(sub_path), '{}-{}'.format(base.split("/")[-1], sub))
 
-print(f'\nTotal images: {len(image_paths)}')
-print(f'Label distribution: {dict(zip(*np.unique(image_labels, return_counts=True)))}')
+print('\nTotal images: {}'.format(len(image_paths)))
+print('Label distribution: {}'.format(dict(zip(*np.unique(image_labels, return_counts=True)))))
 
 # %% [code]
 # ============================================================
@@ -165,7 +165,7 @@ X_val, X_test, y_val, y_test = train_test_split(
     X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=42
 )
 
-print(f'Train: {len(X_train)}, Val: {len(X_val)}, Test: {len(X_test)}')
+print('Train: {}, Val: {}, Test: {}'.format(len(X_train), len(X_val), len(X_test)))
 
 # %% [code]
 # ============================================================
@@ -263,15 +263,15 @@ trainer.train()
 # STEP 10: Evaluate and Save
 # ============================================================
 results = trainer.evaluate(test_data)
-print(f"\nTest Accuracy: {results['eval_accuracy']:.4f}")
-print(f"Test F1: {results['eval_f1']:.4f}")
+print("\nTest Accuracy: {:.4f}".format(results['eval_accuracy']))
+print("Test F1: {:.4f}".format(results['eval_f1']))
 
 # Save
 SAVE_PATH = '../models/face_emotion_unified'
 os.makedirs(SAVE_PATH, exist_ok=True)
 trainer.save_model(SAVE_PATH)
 processor.save_pretrained(SAVE_PATH)
-print(f'\nModel saved to {SAVE_PATH}')
+print('\nModel saved to {}'.format(SAVE_PATH))
 
 # %% [code]
 # ============================================================

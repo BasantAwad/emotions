@@ -117,8 +117,8 @@ def translate_label(label):
 LABEL_TO_ID = {label: i for i, label in enumerate(UNIFIED_LABELS)}
 ID_TO_LABEL = {i: label for i, label in enumerate(UNIFIED_LABELS)}
 
-print(f'Unified Labels: {UNIFIED_LABELS}')
-print(f'Label to ID: {LABEL_TO_ID}')
+print('Unified Labels: {}'.format(UNIFIED_LABELS))
+print('Label to ID: {}'.format(LABEL_TO_ID))
 
 # %% [code]
 # ============================================================
@@ -135,7 +135,7 @@ all_labels = []
 try:
     for file in os.listdir('./datasets/text/simaanjali'):
         if file.endswith('.csv'):
-            df = pd.read_csv(f'./datasets/text/simaanjali/{file}')
+            df = pd.read_csv('./datasets/text/simaanjali/{}'.format(file))
             # Find text and label columns (may vary)
             text_col = [c for c in df.columns if 'text' in c.lower() or 'content' in c.lower() or 'sentence' in c.lower()]
             label_col = [c for c in df.columns if 'label' in c.lower() or 'emotion' in c.lower() or 'class' in c.lower()]
@@ -144,7 +144,7 @@ try:
                 labels = [translate_label(l) for l in df[label_col[0]].tolist()]
                 all_texts.extend(texts)
                 all_labels.extend(labels)
-                print(f'Loaded {len(texts)} samples from {file}')
+                print('Loaded {} samples from {}'.format(len(texts), file))
 except Exception as e:
     print(f'Error loading simaanjali dataset: {e}')
 
@@ -152,7 +152,7 @@ except Exception as e:
 try:
     for file in os.listdir('./datasets/text/emotions'):
         if file.endswith('.csv'):
-            df = pd.read_csv(f'./datasets/text/emotions/{file}')
+            df = pd.read_csv('./datasets/text/emotions/{}'.format(file))
             text_col = [c for c in df.columns if 'text' in c.lower()]
             label_col = [c for c in df.columns if 'label' in c.lower() or 'emotion' in c.lower()]
             if text_col and label_col:
@@ -160,7 +160,7 @@ try:
                 labels = [translate_label(l) for l in df[label_col[0]].tolist()]
                 all_texts.extend(texts)
                 all_labels.extend(labels)
-                print(f'Loaded {len(texts)} samples from {file}')
+                print('Loaded {} samples from {}'.format(len(texts), file))
 except Exception as e:
     print(f'Error loading emotions dataset: {e}')
 
@@ -174,12 +174,12 @@ try:
         label_idx = item['labels'][0] if item['labels'] else 27
         original_label = GO_EMOTIONS_LABELS[label_idx]
         all_labels.append(translate_label(original_label))
-    print(f'Loaded {len(go_emotions)} samples from GoEmotions')
+    print('Loaded {} samples from GoEmotions'.format(len(go_emotions)))
 except Exception as e:
-    print(f'Error loading GoEmotions: {e}')
+    print('Error loading GoEmotions: {}'.format(e))
 
-print(f'\nTotal samples: {len(all_texts)}')
-print(f'Label distribution: {pd.Series(all_labels).value_counts().to_dict()}')
+print('\\nTotal samples: {}'.format(len(all_texts)))
+print('Label distribution: {}'.format(pd.Series(all_labels).value_counts().to_dict()))
 
 # %% [code]
 # ============================================================
@@ -191,7 +191,7 @@ valid_data = [(t, l) for t, l in zip(all_texts, all_labels) if l in LABEL_TO_ID]
 texts_clean = [t for t, l in valid_data]
 labels_clean = [LABEL_TO_ID[l] for t, l in valid_data]
 
-print(f'Valid samples: {len(texts_clean)}')
+print('Valid samples: {}'.format(len(texts_clean)))
 
 # Create HuggingFace Dataset
 from datasets import Dataset
@@ -208,9 +208,9 @@ dataset_dict = {
     'test': test_val['test']
 }
 
-print(f"Train: {len(dataset_dict['train'])}")
-print(f"Val: {len(dataset_dict['validation'])}")
-print(f"Test: {len(dataset_dict['test'])}")
+print("Train: {}".format(len(dataset_dict['train'])))
+print("Val: {}".format(len(dataset_dict['validation'])))
+print("Test: {}".format(len(dataset_dict['test'])))
 
 # %% [code]
 # ============================================================
@@ -288,15 +288,15 @@ trainer.train()
 # STEP 9: Evaluate and Save
 # ============================================================
 results = trainer.evaluate(tokenized_test)
-print(f"\nTest Accuracy: {results['eval_accuracy']:.4f}")
-print(f"Test F1: {results['eval_f1']:.4f}")
+print("\\nTest Accuracy: {:.4f}".format(results['eval_accuracy']))
+print("Test F1: {:.4f}".format(results['eval_f1']))
 
 # Save to local models folder
 SAVE_PATH = '../models/text_emotion_unified'
 os.makedirs(SAVE_PATH, exist_ok=True)
 trainer.save_model(SAVE_PATH)
 tokenizer.save_pretrained(SAVE_PATH)
-print(f'\nModel saved to {SAVE_PATH}')
+print('\\nModel saved to {}'.format(SAVE_PATH))
 
 # %% [code]
 # ============================================================
@@ -327,7 +327,7 @@ test_texts = [
 
 for text in test_texts:
     result = classifier(text)
-    print(f'\n"{text}"')
+    print('\\n"{}"'.format(text))
     for r in result[0]:
-        print(f"  {r['label']}: {r['score']:.3f}")
+        print("  {}: {:.3f}".format(r['label'], r['score']))
 
