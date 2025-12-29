@@ -1,0 +1,24 @@
+# ===== CORE =====
+torch>=2.0.0
+transformers>=4.30.0
+datasets
+accelerate
+scikit-learn
+pandas
+numpy
+tqdm
+kaggle
+Pillow
+
+# ===== AUDIO =====
+librosa>=0.10.0
+soundfile>=0.12.0
+torchaudio>=2.0.0
+
+# ===== IMAGE =====
+torchvision>=0.15.0
+
+huggingface-hub>=0.20.0
+# ===== OTHER =====
+# tensorflow>=2.13.0
+# opencv-python>=4.8.0
