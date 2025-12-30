@@ -19,9 +19,3 @@ torchaudio>=2.0.0
 torchvision>=0.15.0
 
 huggingface-hub>=0.20.0
-
-# ===== PYTHON 2 BACKPORTS =====
-# Install these if running on Python 2.x
-pathlib2
-futures  # backport of concurrent.futures
-configparser  # backport of configparser
