@@ -24,7 +24,8 @@ kaggle_json = '''{
 }'''
 
 kaggle_dir = os.path.expanduser('~/.kaggle')
-os.makedirs(kaggle_dir, exist_ok=True)
+if not os.path.exists(kaggle_dir):
+    os.makedirs(kaggle_dir)
 kaggle_file = os.path.join(kaggle_dir, 'kaggle.json')
 with open(kaggle_file, 'w') as f:
     f.write(kaggle_json)
@@ -101,8 +102,8 @@ def translate_label(label):
     label_lower = str(label).lower().strip()
     return LABEL_TRANSLATION.get(label_lower, label_lower)
 
-LABEL_TO_ID = {label: i for i, label in enumerate(UNIFIED_LABELS)}
-ID_TO_LABEL = {i: label for i, label in enumerate(UNIFIED_LABELS)}
+LABEL_TO_ID = dict((label, i) for i, label in enumerate(UNIFIED_LABELS))
+ID_TO_LABEL = dict((i, label) for i, label in enumerate(UNIFIED_LABELS))
 
 print('Unified Labels: {}'.format(UNIFIED_LABELS))
 
@@ -288,7 +289,8 @@ print("Test F1: {:.4f}".format(results['eval_f1']))
 
 # Save
 SAVE_PATH = '../models/audio_emotion_unified'
-os.makedirs(SAVE_PATH, exist_ok=True)
+if not os.path.exists(SAVE_PATH):
+    os.makedirs(SAVE_PATH)
 trainer.save_model(SAVE_PATH)
 feature_extractor.save_pretrained(SAVE_PATH)
 print('\\nModel saved to {}'.format(SAVE_PATH))
@@ -297,8 +299,9 @@ print('\\nModel saved to {}'.format(SAVE_PATH))
 # ============================================================
 # STEP 10: Upload to HuggingFace (Optional)
 # ============================================================
- from huggingface_hub import login
- login()
- model.push_to_hub('BasantAwad/speech_emotion')
- feature_extractor.push_to_hub('BasantAwad/speech_emotion')
+from huggingface_hub import login
+login()
+model.push_to_hub('BasantAwad/speech_emotion')
+feature_extractor.push_to_hub('BasantAwad/speech_emotion')
+
 
