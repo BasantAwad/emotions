@@ -44,15 +44,23 @@ print('Kaggle API Connected!')
 # ============================================================
 # STEP 3: Download Datasets from Kaggle
 # ============================================================
-# !mkdir -p ./datasets/text
+import subprocess
+
+# Create directories
+if not os.path.exists('./datasets/text'):
+    os.makedirs('./datasets/text')
 
 # Dataset 1: Emotion Analysis Based on Text
-# !kaggle datasets download -d simaanjali/emotion-analysis-based-on-text -p ./datasets/text/simaanjali --unzip
+if not os.path.exists('./datasets/text/simaanjali'):
+    print('Downloading Emotion Analysis Based on Text...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'simaanjali/emotion-analysis-based-on-text', '-p', './datasets/text/simaanjali', '--unzip'])
 
 # Dataset 2: Emotions Dataset
-# !kaggle datasets download -d nelgiriyewithana/emotions -p ./datasets/text/emotions --unzip
+if not os.path.exists('./datasets/text/emotions'):
+    print('Downloading Emotions Dataset...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'nelgiriyewithana/emotions', '-p', './datasets/text/emotions', '--unzip'])
 
-print('\nDatasets downloaded!')
+print('\\nDatasets downloaded!')
 
 # %% [code]
 # ============================================================
@@ -332,4 +340,5 @@ for text in test_texts:
     print('\\n"{}"'.format(text))
     for r in result[0]:
         print("  {}: {:.3f}".format(r['label'], r['score']))
+
 

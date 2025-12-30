@@ -42,18 +42,28 @@ print('Kaggle API Connected!')
 # ============================================================
 # STEP 3: Download Datasets from Kaggle
 # ============================================================
-# !mkdir -p ./datasets/audio
+import subprocess
+
+# Create directories
+if not os.path.exists('./datasets/audio'):
+    os.makedirs('./datasets/audio')
 
 # Dataset 1: RAVDESS
-# !kaggle datasets download -d uwrfkaggler/ravdess-emotional-speech-audio -p ./datasets/audio/ravdess --unzip
+if not os.path.exists('./datasets/audio/ravdess'):
+    print('Downloading RAVDESS...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'uwrfkaggler/ravdess-emotional-speech-audio', '-p', './datasets/audio/ravdess', '--unzip'])
 
 # Dataset 2: Speech Emotion Recognition EN
-# !kaggle datasets download -d dmitrybabko/speech-emotion-recognition-en -p ./datasets/audio/ser_en --unzip
+if not os.path.exists('./datasets/audio/ser_en'):
+    print('Downloading Speech Emotion Recognition EN...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'dmitrybabko/speech-emotion-recognition-en', '-p', './datasets/audio/ser_en', '--unzip'])
 
 # Dataset 3: TESS (Toronto Emotional Speech Set)
-# !kaggle datasets download -d ejlok1/toronto-emotional-speech-set-tess -p ./datasets/audio/tess --unzip
+if not os.path.exists('./datasets/audio/tess'):
+    print('Downloading TESS...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'ejlok1/toronto-emotional-speech-set-tess', '-p', './datasets/audio/tess', '--unzip'])
 
-print('\nDatasets downloaded!')
+print('\\nDatasets downloaded!')
 
 # %% [code]
 # ============================================================
@@ -306,5 +316,6 @@ from huggingface_hub import login
 login()
 model.push_to_hub('BasantAwad/speech_emotion')
 feature_extractor.push_to_hub('BasantAwad/speech_emotion')
+
 
 

@@ -43,21 +43,33 @@ print('Kaggle API Connected!')
 # ============================================================
 # STEP 3: Download Datasets from Kaggle
 # ============================================================
-# !mkdir -p ./datasets/face
+import subprocess
 
-# Dataset 1: FER2013
-# !kaggle datasets download -d msambare/fer2013 -p ./datasets/face/fer2013 --unzip
+# Create directories
+if not os.path.exists('./datasets/face'):
+    os.makedirs('./datasets/face')
 
-# Dataset 2: Facial Emotion Recognition
-# !kaggle datasets download -d fahadullaha/facial-emotion-recognition-dataset -p ./datasets/face/fer_dataset --unzip
+# Dataset 1: FER2013 (main dataset)
+if not os.path.exists('./datasets/face/fer2013'):
+    print('Downloading FER2013...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'msambare/fer2013', '-p', './datasets/face/fer2013', '--unzip'])
 
-# Dataset 3: Emotion Recognition Dataset
-# !kaggle datasets download -d sujaykapadnis/emotion-recognition-dataset -p ./datasets/face/emotion_rec --unzip
+# Dataset 2: Facial Emotion Recognition (optional)
+if not os.path.exists('./datasets/face/fer_dataset'):
+    print('Downloading Facial Emotion Recognition dataset...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'fahadullaha/facial-emotion-recognition-dataset', '-p', './datasets/face/fer_dataset', '--unzip'])
 
-# Dataset 4: Emotion Detection FER
-# !kaggle datasets download -d ananthu017/emotion-detection-fer -p ./datasets/face/emotion_det --unzip
+# Dataset 3: Emotion Recognition Dataset (optional)
+if not os.path.exists('./datasets/face/emotion_rec'):
+    print('Downloading Emotion Recognition dataset...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'sujaykapadnis/emotion-recognition-dataset', '-p', './datasets/face/emotion_rec', '--unzip'])
 
-print('\nDatasets downloaded!')
+# Dataset 4: Emotion Detection FER (optional)
+if not os.path.exists('./datasets/face/emotion_det'):
+    print('Downloading Emotion Detection FER...')
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', 'ananthu017/emotion-detection-fer', '-p', './datasets/face/emotion_det', '--unzip'])
+
+print('\\nDatasets downloaded!')
 
 # %% [code]
 # ============================================================
