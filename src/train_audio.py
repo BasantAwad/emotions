@@ -113,7 +113,10 @@ print('Unified Labels: {}'.format(UNIFIED_LABELS))
 # ============================================================
 import librosa
 import numpy as np
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from tqdm import tqdm
 
 SAMPLE_RATE = 16000

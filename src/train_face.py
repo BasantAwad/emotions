@@ -101,7 +101,10 @@ print('Unified Labels: {}'.format(UNIFIED_LABELS))
 # ============================================================
 # STEP 5: Load Images from All Datasets
 # ============================================================
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
