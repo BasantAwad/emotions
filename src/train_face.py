@@ -19,6 +19,9 @@
 # ============================================================
 import os
 
+# Select GPU 4 (least busy based on nvidia-smi)
+os.environ['CUDA_VISIBLE_DEVICES'] = '4'
+
 kaggle_json = '''{
     "username": "basantawad",
     "key": "73699caea5f0322acca5bc42516c5998"
@@ -251,8 +254,8 @@ def compute_metrics(p):
 args = TrainingArguments(
     output_dir='./face_model_unified',
     num_train_epochs=10,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=32,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=16,
     warmup_steps=500,
     weight_decay=0.01,
     eval_strategy='epoch',
@@ -298,4 +301,5 @@ from huggingface_hub import login
 login()
 model.push_to_hub('BasantAwad/facial-emotion')
 processor.push_to_hub('BasantAwad/facial-emotion')
+
 
